@@ -17,6 +17,7 @@ import { editNote } from "./buttons/editNote.js";
 import { bookmark } from "./interactions/bookmark.js";
 import { deleteCmd } from "./interactions/deleteCmd.js";
 import { note } from "./modals/note.js";
+import { instantiateServer } from "./server/serve.js";
 import { logger } from "./utils/logger.js";
 
 const callista = new Client({
@@ -88,4 +89,5 @@ callista.on(Events.InteractionCreate, (interaction) => {
   void handleInteraction(interaction);
 });
 
+instantiateServer();
 await callista.login(process.env.BOT_TOKEN);

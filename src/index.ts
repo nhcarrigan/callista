@@ -4,6 +4,7 @@
  * @author Naomi Carrigan
  */
 
+import { DiscordAnalytics } from "@nhcarrigan/discord-analytics";
 import {
   ActionRowBuilder,
   Client,
@@ -24,10 +25,13 @@ const callista = new Client({
   intents: [],
 });
 
+const analytics = new DiscordAnalytics(callista, logger);
+
 // eslint-disable-next-line max-statements, complexity, max-lines-per-function -- Reason: It's fine like this
 const handleInteraction = async(
   interaction: BaseInteraction,
 ): Promise<void> => {
+  await analytics.logGatewayEvent(Events.InteractionCreate, { ...interaction });
   if (interaction.isButton()) {
     if (!interaction.channel) {
       await callista.channels.fetch(interaction.channelId);
@@ -83,6 +87,7 @@ const handleInteraction = async(
 
 callista.once("ready", () => {
   void logger.log("debug", "Callista is online!");
+  analytics.startCron();
 });
 
 callista.on(Events.InteractionCreate, (interaction) => {

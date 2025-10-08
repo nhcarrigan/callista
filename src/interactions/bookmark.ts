@@ -12,6 +12,7 @@ import {
 import { addNote } from "../buttons/addNote.js";
 import { discord } from "../buttons/discord.js";
 import { donate } from "../buttons/donate.js";
+import { logger } from "../utils/logger.js";
 
 /**
  * Bookmarks the target message by sending the user a DM with the message link.
@@ -50,4 +51,5 @@ export const bookmark = async(
   await interaction.editReply({
     content: "✅ I've sent you a DM with the message link!",
   });
+  await logger.metric("bookmarks", 1, { user: user.id });
 };
